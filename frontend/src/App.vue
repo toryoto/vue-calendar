@@ -1,14 +1,14 @@
 <template>
-  <HelloWorld />
+  <Calendar />
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Calendar from './components/Calendar.vue';
 
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    HelloWorld,
+    Calendar,
   },
 };
 </script>
