@@ -1,9 +1,8 @@
-import { createStore } from 'vuex';
+import Vuex from 'vuex';
+import events from './modules/events';
 
-export default createStore({
-  state: {},
-  getters: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+export default new Vuex.Store({
+  modules: {
+    events,
+  },
 });
