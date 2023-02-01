@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h1>Calendar</h1>
-    <ul>
-      <li v-for="event in events" :key="event.id">
+    <h1 class="text-h1">Calendar</h1>
+    <v-list>
+      <v-list-item v-for="event in events" :key="event.id">
         {{ event.name }}
-      </li>
-    </ul>
-    <button type="submit" @click="fetchEvents()">fetchEvents</button>
+      </v-list-item>
+    </v-list>
+    <v-btn type="submit" @click="fetchEvents()">fetchEvents</v-btn>
 
     <CalendarDetails />
   </div>
@@ -14,17 +14,17 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import CalendarDetails from './CalendarDetails.vue';
 
 export default {
   name: 'Calendar',
-  components: {
-    CalendarDetails,
-  },
   computed: {
+    // 最初は空
+    // return this.$store.getters['events/events']
     ...mapGetters('events', ['events']),
   },
   methods: {
+    // mapActionsはthis.$store.dispatchを記述しやすくするためのヘルパー
+    // this.$store.dispatch('events/fetchEvents')
     ...mapActions('events', ['fetchEvents']),
   },
 };
