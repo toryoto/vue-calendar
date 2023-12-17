@@ -2,7 +2,7 @@
 <template>
   <v-menu offset-y>
     <template v-slot:activator="{ on }">
-      <v-btn text v-on="on">{{ value || '日付を選択' }}</v-btn>
+      <v-btn text v-on="on" :class="{ 'red lighten-4 rounded': isError }">{{ value || '日付を選択' }}</v-btn>
     </template>
     <!-- :valueはpropsから受け取る値を保持する変数
     @inputはその変数が更新された時の処理 -->
@@ -20,6 +20,6 @@
 <script>
 export default {
   name: 'DateForm',
-  props: ['value'],
+  props: ['value', 'isError'],
 };
 </script>
