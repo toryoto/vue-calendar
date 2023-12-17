@@ -20,12 +20,14 @@
         :day-format="(timestamp) => new Date(timestamp.date).getDate()"
         :month-format="(timestamp) => new Date(timestamp.date).getMonth() + 1 + ' /'"
         @click:event="showEvent"
+        @click:day="initEvent"
       ></v-calendar>
     </v-sheet>
 
     <!-- eventに値があればダイアログ表示 -->
     <v-dialog :value="event !== null" @click:outside="closeDialog" width="600">
-      <EventDetailDialog v-if="event !== null" />
+      <EventDetailDialog v-if="event !== null && !isEditMode" />
+      <EventFormDialog v-if="event !== null && isEditMode" />
     </v-dialog>
   </div>
 </template>
@@ -34,6 +36,8 @@
 import { mapGetters, mapActions } from 'vuex';
 import { format } from 'date-fns';
 import EventDetailDialog from './EventDetaildialog.vue';
+import EventFormDialog from './EventFormDialog.vue';
+import { getDefaultStartAndEnd } from '../functions/datetime';
 
 export default {
   name: 'Calendar',
@@ -42,25 +46,35 @@ export default {
   }),
   components: {
     EventDetailDialog,
+    EventFormDialog,
   },
   computed: {
     // 第一引数はパス
     // return this.$store.gettersのヘルパー
-    ...mapGetters('events', ['events', 'event']),
+    ...mapGetters('events', ['events', 'event', 'isEditMode']),
     title() {
       return format(new Date(this.value), 'yyyy年M月');
     },
   },
   methods: {
-    ...mapActions('events', ['fetchEvents', 'setEvent']),
+    ...mapActions('events', ['fetchEvents', 'setEvent', 'setEditMode']),
     setToday() {
       this.value = format(new Date(), 'yyyy/MM/dd');
     },
-    showEvent({ event }) {
+    showEvent({ nativeEvent, event }) {
       this.setEvent(event);
+      nativeEvent.stopPropagation();
     },
     closeDialog() {
       this.setEvent(null);
+      this.setEditMode(false);
+    },
+    initEvent({ date }) {
+      // dateには2021-10-07のように値が渡される
+      date = date.replace(/-/g, '/');
+      const [start, end] = getDefaultStartAndEnd(date);
+      this.setEvent({ name: '', start, end, timed: true });
+      this.setEditMode(true);
     },
   },
 };
