@@ -1,3 +1,5 @@
+import { format, addHours } from 'date-fns';
+
 export const getTimeIntervalList = () => {
   // 15分感覚の時間のリストを返す
   // スプレッド構文とArrayでインデックスiを取得
@@ -7,4 +9,15 @@ export const getTimeIntervalList = () => {
   const minutes = ['00', '15', '30', '45'];
   const timeList = hours.map((hour) => minutes.map((minute) => hour + ':' + minute)).flat();
   return timeList;
+};
+
+//デフォルトで開始時間を現在時刻+1、終了時間を+2で返すメソッド
+export const getDefaultStartAndEnd = (date) => {
+  // 現在時刻
+  const currentTime = format(new Date(), 'HH:mm:ss');
+  // 日時＋現在時刻
+  const dateTime = new Date(`${date} ${currentTime}`);
+  const start = format(addHours(dateTime, 1), 'yyyy/MM/dd HH:00:00');
+  const end = format(addHours(dateTime, 2), 'yyyy/MM/dd HH:00:00');
+  return [start, end];
 };
