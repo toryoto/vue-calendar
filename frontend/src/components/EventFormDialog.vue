@@ -24,11 +24,15 @@
       </DialogSection>
 
       <DialogSection>
-          <CheckBox v-model="allDay" label="終日" class="ma-0 pa-0" />
-        </DialogSection>
+        <CheckBox v-model="allDay" label="終日" class="ma-0 pa-0" />
+      </DialogSection>
 
       <DialogSection icon="mdi-card-text-outline">
         <TextForm v-model="description" />
+      </DialogSection>
+
+      <DialogSection icon="mdi-calendar">
+        <CalendarSelectForm :value="calendar" @input="changeCalendar($event)" />
       </DialogSection>
 
       <DialogSection icon="mdi-palette">
@@ -53,6 +57,7 @@ import TimeForm from './TimeForm';
 import TextForm from './TextForm';
 import ColorForm from './ColorForm';
 import CheckBox from './CheckBox.vue';
+import CalendarSelectForm from './forms/CalendarSelectForm'
 import { isGreaterEndThanStart } from '../functions/datetime';
 
 export default {
@@ -65,6 +70,7 @@ export default {
     TextForm,
     ColorForm,
     CheckBox,
+    CalendarSelectForm,
   },
   data: () => ({
     name: '',
@@ -74,11 +80,13 @@ export default {
     endTime: null,
     description: '',
     allDay: false,
+    calendar: null
   }),
   validations: {
     name: { required },
     startDate: { required },
     endDate: { required },
+    calendar: { required },
   },
   computed: {
     ...mapGetters('events', ['event']),
@@ -98,6 +106,7 @@ export default {
     this.description = this.event.description;
     this.color = this.event.color;
     this.allDay = !this.event.timed;
+    this.calendar = this.event.calendar;
   },
   methods: {
     ...mapActions('events', ['setEvent', 'setEditMode', 'createEvent', 'updateEvent']),
@@ -117,6 +126,7 @@ export default {
         description: this.description,
         color: this.color,
         timed: !this.allDay,
+        calendar_id: this.calendar.id,
       };
       if (params.id) {
         // paramsにidがある→イベント編集
@@ -132,6 +142,10 @@ export default {
       if (!this.event.id) {
         this.setEvent(null);
       }
+    },
+    changeCalendar(calendar) {
+      this.color = calendar.color;
+      this.calendar = calendar;
     },
   },
 };

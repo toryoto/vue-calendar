@@ -21,9 +21,9 @@ const mutations = {
   appendEvent: (state, event) => (state.events = [...state.events, event]),
   setEvent: (state, event) => (state.event = event),
   setEditMode: (state, bool) => (state.isEditMode = bool),
-  removeEvent: (state, event) => (state.events = state.events.filter(element => element.id !== event.id)),
-  resetEvent: state => (state.event = null),
-  updateEvent: (state, event) => (state.events = state.events.map(element => (element.id === event.id ? event : element))),
+  removeEvent: (state, event) => (state.events = state.events.filter((element) => element.id !== event.id)),
+  resetEvent: (state) => (state.event = null),
+  updateEvent: (state, event) => (state.events = state.events.map((element) => (element.id === event.id ? event : element))),
 };
 
 const actions = {

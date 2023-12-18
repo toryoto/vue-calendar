@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-sheet height="6vh" class="d-flex align-center">
+    <v-sheet height="6vh" class="d-flex align-center" color="grey lighten-3">
       <v-btn outlined small class="ma-4" @click="setToday()">今日</v-btn>
       <v-btn icon @click="$refs.calendar.prev()">
         <v-icon>mdi-chevron-left</v-icon>
@@ -10,18 +10,23 @@
       </v-btn>
       <v-toolbar>{{ title }}</v-toolbar>
     </v-sheet>
-    <v-sheet height="94vh">
-      <v-calendar
-        v-model="value"
-        :events="events"
-        @change="fetchEvents"
-        ref="calendar"
-        locale="jp"
-        :day-format="(timestamp) => new Date(timestamp.date).getDate()"
-        :month-format="(timestamp) => new Date(timestamp.date).getMonth() + 1 + ' /'"
-        @click:event="showEvent"
-        @click:day="initEvent"
-      ></v-calendar>
+    <v-sheet height="94vh" class="d-flex">
+      <v-sheet width="200px">
+        <CalendarList />
+      </v-sheet>
+      <v-sheet class="flex">
+        <v-calendar
+          ref="calendar"
+          v-model="value"
+          :events="events"
+          @change="fetchEvents"
+          locale="ja-jp"
+          :day-format="(timestamp) => new Date(timestamp.date).getDate()"
+          :month-format="(timestamp) => new Date(timestamp.date).getMonth() + 1 + ' /'"
+          @click:event="showEvent"
+          @click:day="initEvent"
+        ></v-calendar>
+      </v-sheet>
     </v-sheet>
 
     <!-- eventに値があればダイアログ表示 -->
@@ -37,6 +42,7 @@ import { mapGetters, mapActions } from 'vuex';
 import { format } from 'date-fns';
 import EventDetailDialog from './EventDetaildialog.vue';
 import EventFormDialog from './EventFormDialog.vue';
+import CalendarList from './calendars/CalendarList.vue';
 import { getDefaultStartAndEnd } from '../functions/datetime';
 
 export default {
@@ -47,6 +53,7 @@ export default {
   components: {
     EventDetailDialog,
     EventFormDialog,
+    CalendarList,
   },
   computed: {
     // 第一引数はパス

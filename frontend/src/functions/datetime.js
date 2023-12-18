@@ -36,6 +36,6 @@ export const isGreaterEndThanStart = (startDate, startTime, endDate, endTime, al
   }
 };
 
-export const formatDateToJa = date => {
-  return format(new Date(date), 'M月d日(E)', { locale: ja })
-}
+export const formatDateToJa = (date) => {
+  return format(new Date(date), 'M月d日(E)', { locale: ja });
+};
